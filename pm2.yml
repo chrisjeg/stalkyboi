@@ -1,0 +1,7 @@
+apps:
+  - script: dist/index.js
+    name: "stalkyboi"
+    instances: 1
+    watch: true
+    env:
+      NODE_ENV: production
