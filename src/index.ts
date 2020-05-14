@@ -1,6 +1,6 @@
 import * as Discord from "discord.js";
 import { replyAsJson } from "./messageFormatters";
-import { isSundayNow } from "./dateFunctions";
+import { isSundayNow, getPriceSlot } from "./dateFunctions";
 import services from "./services";
 import sendAnalysis from "./analysis/sendAnalysis";
 import sendAnalysisForAll from "./analysis/sendAnalysisForAll";
@@ -61,17 +61,6 @@ const updateModelForDay = (
   }
 };
 
-const getPriceSlot = (): number | null => {
-  const date = new Date();
-  const day = date.getDay() - 1;
-  const hour = date.getHours();
-  if (day > -1) {
-    return day * 2 + (hour >= 12 ? 1 : 0);
-  } else {
-    return null;
-  }
-};
-
 const messageIfBestSundayBuyPrice = (
   message: Discord.Message,
   price: number
@@ -104,8 +93,8 @@ client.on("message", (message) => {
     const [, command, ...input] = content.toLowerCase().split(" ");
     const potentialPrice = parseInt(command);
     console.log(
-      `[${moment().format()}]${message.author.id}:"${message.content}" at ${
-        message.createdTimestamp
+      `[${moment().format()}] ${message.author.id}:"${message.content}" in ${
+        message.author.locale || "unknown"
       })`
     );
     if (!isNaN(potentialPrice)) {

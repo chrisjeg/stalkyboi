@@ -1,11 +1,15 @@
+import moment from "moment";
+
 export const isSundayNow = () => {
   return new Date().getDay() === 0;
 };
 
-export const getPriceSlot = (): number | null => {
-  const date = new Date();
-  const day = date.getDay() - 1;
-  const hour = date.getHours();
+export const getPriceSlot = (
+  locale: string = "Europe/London"
+): number | null => {
+  const now = moment().tz(locale);
+  const day = now.day() - 1;
+  const hour = now.hour();
   if (day > -1) {
     return day * 2 + (hour >= 12 ? 1 : 0);
   } else {
