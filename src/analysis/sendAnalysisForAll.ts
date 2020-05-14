@@ -2,6 +2,7 @@ import { Message, MessageAttachment } from "discord.js";
 import services from "../services";
 import { createChart } from "./analysisChart";
 import { getDiscordUsersForMessage } from "./analysisHelpers";
+import moment from "moment";
 
 export default async (message: Message) => {
   console.log("Creating full analysis");
@@ -13,9 +14,7 @@ export default async (message: Message) => {
         Object.keys(discordUsers)
           .map((dUser) => services.userManager.getUserData(dUser))
           .filter(
-            (user) =>
-              user != null &&
-              user.retentionDate === services.userManager.getRetentionDate()
+            (user) => user != null && user.retentionDate > moment().unix()
           ),
         discordUsers
       )

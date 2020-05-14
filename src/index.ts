@@ -1,6 +1,6 @@
 import * as Discord from "discord.js";
 import { replyAsJson } from "./messageFormatters";
-import { isSundayNow, getPriceSlot } from "./dateFunctions";
+import { isSundayNow, getPriceSlot, DEFAULT_TIMEZONE } from "./dateFunctions";
 import services from "./services";
 import sendAnalysis from "./analysis/sendAnalysis";
 import sendAnalysisForAll from "./analysis/sendAnalysisForAll";
@@ -93,7 +93,7 @@ client.on("message", (message) => {
     const [, command, ...input] = content.toLowerCase().split(" ");
     const potentialPrice = parseInt(command);
     console.log(
-      `[${moment().format()}] ${message.author.id}:"${message.content}" in ${
+      `[${moment().format()}] ${message.author.id}: "${message.content}" in ${
         message.author.locale || "unknown"
       })`
     );
@@ -162,7 +162,8 @@ client.on("message", (message) => {
         services.userManager.resetWeek(
           input[0] != null
             ? input[0].match(USER_ID_REGEX)?.[1] ?? author.id
-            : author.id
+            : author.id,
+          DEFAULT_TIMEZONE
         );
         message.reply("Maybe get better with a computer, bitch ...ᵇᶦᵗᶜʰ");
         break;

@@ -19,7 +19,11 @@ export default async (id: string, message: Message) => {
     const price = guaranteed.prices[priceIndex].max;
     const maxPriceDay = slotToDayTime(priceIndex);
     message.channel.send(
-      `Looks like <@${id}> is lined up for a ${type} with a max price of ${price} on ${maxPriceDay}`
+      `Looks like <@${id}> is lined up for a ${type} with a max price of ${price} on ${maxPriceDay}`,
+      new MessageAttachment(
+        await createChart([user], getDiscordUsersForMessage(message)),
+        "analysis.jpg"
+      )
     );
   } else {
     const minMax = analysis[0];

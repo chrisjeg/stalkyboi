@@ -26,6 +26,8 @@ enum PriceSlot {
   SaturdayPM = 11,
 }
 
+const DEFAULT_TIMEZONE = "Europe/London";
+
 export class UserManager {
   private userData: {
     [user: string]: User;
@@ -44,10 +46,10 @@ export class UserManager {
 
   public addPriceToModel(userId: string, price: number, slot?: PriceSlot) {
     let user = this.getUserData(userId);
-    const currentRetentionDate = this.getRetentionDate();
-    if (user.retentionDate !== currentRetentionDate) {
+    const currentTime = moment().unix();
+    if (user.retentionDate < currentTime) {
       console.log("Resetting data for ", userId);
-      this.resetWeek(userId);
+      this.resetWeek(userId, DEFAULT_TIMEZONE);
       user = this.getUserData(userId);
     }
 
@@ -78,12 +80,12 @@ export class UserManager {
     return this.userData[userId];
   }
 
-  public resetWeek(userId: string) {
+  public resetWeek(userId: string, timezone: string) {
     this.userData[userId] = {
       ...this.getUserData(userId),
       buy: NaN,
       prices: new Array(12).fill(NaN),
-      retentionDate: this.getRetentionDate(),
+      retentionDate: this.getRetentionDate(timezone),
     };
   }
 
@@ -94,7 +96,7 @@ export class UserManager {
     );
   }
 
-  public getRetentionDate() {
-    return moment().isoWeekday(6).endOf("day").unix();
+  public getRetentionDate(timezone: string) {
+    return moment().tz(timezone).isoWeekday(6).endOf("day").unix();
   }
 }

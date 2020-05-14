@@ -1,4 +1,6 @@
-import moment from "moment";
+import moment from "moment-timezone";
+
+export const DEFAULT_TIMEZONE = "Europe/London";
 
 export const isSundayNow = () => {
   return new Date().getDay() === 0;
