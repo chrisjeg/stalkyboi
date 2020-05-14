@@ -4,6 +4,7 @@ import { isSundayNow } from "./dateFunctions";
 import services from "./services";
 import sendAnalysis from "./analysis/sendAnalysis";
 import sendAnalysisForAll from "./analysis/sendAnalysisForAll";
+import moment from "moment";
 const client = new Discord.Client();
 
 const AUTH_LOCATION = "../../config/stalkyboi.json";
@@ -102,6 +103,11 @@ client.on("message", (message) => {
   if (content.toLowerCase().startsWith("stalk ")) {
     const [, command, ...input] = content.toLowerCase().split(" ");
     const potentialPrice = parseInt(command);
+    console.log(
+      `[${moment().format()}]${message.author.id}:"${message.content}" at ${
+        message.createdTimestamp
+      })`
+    );
     if (!isNaN(potentialPrice)) {
       services.userManager.addPriceToModel(message.author.id, potentialPrice);
       if (!isSundayNow()) {
