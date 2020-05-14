@@ -103,7 +103,7 @@ export const createChart = async (
     const id = user.id;
     const userAnalysis = generateAnalysisForUser(id);
     const minMax = toMinMax(userAnalysis[0]);
-    const mostLikely = toMinMax(userAnalysis[1]);
+    const mostLikely = toMinMax(userAnalysis[1] ?? userAnalysis[0]);
     analyses[id] = {
       minMax,
       mostLikely,
