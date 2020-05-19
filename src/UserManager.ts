@@ -40,8 +40,8 @@ export class UserManager {
     }, 10000);
   }
 
-  public setFirstTime(userId: string) {
-    this.getUserData(userId).firstTime = true;
+  public setFirstTime(userId: string, state: boolean) {
+    this.getUserData(userId).firstTime = state;
   }
 
   public addPriceToModel(userId: string, price: number, slot?: PriceSlot) {
