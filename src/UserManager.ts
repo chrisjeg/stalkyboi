@@ -97,6 +97,14 @@ export class UserManager {
   }
 
   public getRetentionDate(timezone: string) {
-    return moment().tz(timezone).isoWeekday(6).endOf("day").unix();
+    const now = moment().tz(timezone);
+    const currentIsoDay = now.isoWeekday();
+
+    // If its Sunday, we jump to next week
+    if (currentIsoDay === 7) {
+      return now.add(1, "week").isoWeekday(6).endOf("day").unix();
+    }
+
+    return now.isoWeekday(6).endOf("day").unix();
   }
 }

@@ -120,7 +120,7 @@ client.on("message", (message) => {
     switch (lowerCasedCommand) {
       case "help":
         message.reply(
-          "Stalkyboi is a bot to help you and your friends predict your turnip prices. To input your current price type `stalk {your_price}`, if you want to add prices retrospectively for the week you can type `stalk (sunday|buy) ${your_price}` for your buy price and `stalk (monday|tuesday|...) (am|pm) ${your_price}` for the week, for example *stalk monday am 105*. Stalky is a work in progress, if he's a bit shit then give him your feedback. He won't take it on board. You can toggle first time mode by using `stalkyboi first time (true|false)."
+          "Stalkyboi is a bot to help you and your friends predict your turnip prices. To input your current price type `stalk {your_price}`, if you want to add prices retrospectively for the week you can type `stalk (sunday|buy) ${your_price}` for your buy price and `stalk (monday|tuesday|...) (am|pm) ${your_price}` for the week, for example *stalk monday am 105*. Stalky is a work in progress, if he's a bit shit then give him your feedback. He won't take it on board. You can toggle first time mode by using `stalk first time (true|false)`."
         );
       case "sunday":
       case "buy": {
