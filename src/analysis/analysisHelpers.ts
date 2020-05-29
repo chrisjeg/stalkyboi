@@ -2,6 +2,7 @@ import { Analysis, DiscordUsers, DiscordUser } from "../analysisTyping";
 import services from "../services";
 import { getPriceSlot } from "../dateFunctions";
 import { Message, TextChannel } from "discord.js";
+import moment from "moment";
 const analyze_possibilities = require("./predictions");
 
 const SUNDAY_OFFSET = 2;
@@ -11,7 +12,11 @@ export const generateAnalysisForUser = (userId: string): Analysis[] => {
   const sellPrices = [user.buy, user.buy, ...user.prices].map((x) =>
     typeof x === "number" ? x : NaN
   );
-  return analyze_possibilities(sellPrices, user.firstTime, -1);
+  let patternNumber = -1;
+  if (user.pattern?.validForWeek === moment().subtract(1, "weeks").isoWeek()) {
+    patternNumber = user.pattern.patternNumber;
+  }
+  return analyze_possibilities(sellPrices, user.firstTime, patternNumber);
 };
 
 export const calculateMaxIndex = (analysis: Analysis) => {

@@ -1,6 +1,7 @@
 import jsonfile from "jsonfile";
 import { getPriceSlot } from "./dateFunctions";
 import moment from "moment";
+import { Pattern } from "./analysisTyping";
 
 export interface User {
   id: string;
@@ -9,6 +10,10 @@ export interface User {
   buy: number;
   prices: number[];
   retentionDate?: number;
+  pattern?: {
+    validForWeek: number;
+    patternNumber: number;
+  };
 }
 
 enum PriceSlot {
@@ -73,6 +78,15 @@ export class UserManager {
         prices: new Array(12).fill(NaN),
       };
     }
+    const currentTime = moment().unix();
+    if (this.userData[userId].retentionDate < currentTime) {
+      this.userData[userId] = {
+        ...this.userData[userId],
+        buy: NaN,
+        prices: new Array(12).fill(NaN),
+        retentionDate: this.getRetentionDate(DEFAULT_TIMEZONE),
+      };
+    }
     return this.userData[userId];
   }
 
@@ -94,6 +108,13 @@ export class UserManager {
       (min, value) => (!isNaN(value.buy) && value.buy < min ? value.buy : min),
       1000
     );
+  }
+
+  public lockPattern(userId: string, patternNumber: number) {
+    this.getUserData(userId).pattern = {
+      validForWeek: moment().isoWeek(),
+      patternNumber,
+    };
   }
 
   public getRetentionDate(timezone: string) {

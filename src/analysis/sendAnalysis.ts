@@ -15,6 +15,8 @@ export default async (id: string, message: Message) => {
   if (analysis.length === 2) {
     const guaranteed = analysis[1] as Analysis;
     const type = patternToString[guaranteed.pattern_description];
+
+    services.userManager.lockPattern(id, guaranteed.pattern_number);
     const priceIndex = calculateMaxIndex(guaranteed);
     const price = guaranteed.prices[priceIndex].max;
     const maxPriceDay = slotToDayTime(priceIndex);
