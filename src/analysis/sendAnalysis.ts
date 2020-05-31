@@ -3,11 +3,8 @@ import services from "../services";
 import { Analysis, patternToString } from "../analysisTyping";
 import { slotToDayTime } from "../dateFunctions";
 import { createChart } from "./analysisChart";
-import {
-  generateAnalysisForUser,
-  calculateMaxIndex,
-  getDiscordUsersForMessage,
-} from "./analysisHelpers";
+import { generateAnalysisForUser, calculateMaxIndex } from "./analysisHelpers";
+import { getDiscordUsersForMessage } from "../messageHelpers";
 
 export default async (id: string, message: Message) => {
   const user = services.userManager.getUserData(id);

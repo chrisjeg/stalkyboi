@@ -1,6 +1,8 @@
 import jsonfile from "jsonfile";
 import { getPriceSlot } from "../dateFunctions";
 import moment from "moment";
+import { Message } from "discord.js";
+import { getDiscordUsersForMessage } from "../messageHelpers";
 
 export interface User {
   id: string;
@@ -98,8 +100,15 @@ export class UserManager {
     };
   }
 
-  public getBestBuyPrice() {
-    return Object.values(this.userData).reduce(
+  public getAllValidUsersForMessage(message: Message) {
+    const discordUsers = getDiscordUsersForMessage(message);
+    return Object.keys(discordUsers)
+      .map((dUser) => this.getUserData(dUser))
+      .filter((user) => user != null && user.retentionDate > moment().unix());
+  }
+
+  public getBestBuyPrice(message: Message) {
+    return this.getAllValidUsersForMessage(message).reduce(
       (min, value) => (!isNaN(value.buy) && value.buy < min ? value.buy : min),
       1000
     );

@@ -65,7 +65,7 @@ const messageIfBestSundayBuyPrice = (
   message: Discord.Message,
   price: number
 ) => {
-  const min = services.userManager.getBestBuyPrice();
+  const min = services.userManager.getBestBuyPrice(message);
   if (min === price) {
     message.react("🔥");
     message.channel
@@ -123,6 +123,12 @@ client.on("message", (message) => {
         message.react("✅");
         message.reply("I have DM'd help documentation over to you!");
         message.author.send(helpText);
+        break;
+      case "valid":
+        replyAsJson(
+          message,
+          services.userManager.getAllValidUsersForMessage(message)
+        );
         break;
       case "sunday":
       case "buy": {
