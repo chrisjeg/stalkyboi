@@ -6,7 +6,7 @@ import {
 } from "canvas";
 import { Analysis, DiscordUsers } from "../analysisTyping";
 import * as d3 from "d3";
-import { User } from "../UserManager";
+import { User } from "../services/UserManager";
 import Color from "color";
 import { generateAnalysisForUser } from "./analysisHelpers";
 import { sortBy, reverse } from "lodash";

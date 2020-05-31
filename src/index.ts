@@ -94,7 +94,7 @@ client.on("message", (message) => {
     const potentialPrice = parseInt(command);
     console.log(
       `[${moment().format()}] ${message.author.id}: "${message.content}" in ${
-        message.author.locale || "unknown"
+        message.channel.id
       })`
     );
     if (!isNaN(potentialPrice)) {
@@ -119,9 +119,11 @@ client.on("message", (message) => {
     const lowerCasedCommand = command?.toLowerCase();
     switch (lowerCasedCommand) {
       case "help":
-        message.reply(
-          "Stalkyboi is a bot to help you and your friends predict your turnip prices. To input your current price type `stalk {your_price}`, if you want to add prices retrospectively for the week you can type `stalk (sunday|buy) ${your_price}` for your buy price and `stalk (monday|tuesday|...) (am|pm) ${your_price}` for the week, for example *stalk monday am 105*. Stalky is a work in progress, if he's a bit shit then give him your feedback. He won't take it on board. You can toggle first time mode by using `stalk first time (true|false)`."
-        );
+        const helpText = services.helpFile.get();
+        message.react("✅");
+        message.reply("I have DM'd help documentation over to you!");
+        message.author.send(helpText);
+        break;
       case "sunday":
       case "buy": {
         const price = parseInt(input[0]);

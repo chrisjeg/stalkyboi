@@ -1,7 +1,6 @@
 import jsonfile from "jsonfile";
-import { getPriceSlot } from "./dateFunctions";
+import { getPriceSlot } from "../dateFunctions";
 import moment from "moment";
-import { Pattern } from "./analysisTyping";
 
 export interface User {
   id: string;
@@ -87,10 +86,6 @@ export class UserManager {
         retentionDate: this.getRetentionDate(DEFAULT_TIMEZONE),
       };
     }
-    return this.userData[userId];
-  }
-
-  public getUserDataWithoutDefault(userId: string) {
     return this.userData[userId];
   }
 
