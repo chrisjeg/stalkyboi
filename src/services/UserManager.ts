@@ -34,6 +34,9 @@ enum PriceSlot {
 
 const DEFAULT_TIMEZONE = "Europe/London";
 
+const isNumber = (value: any): value is number =>
+  !isNaN(value) && typeof value === "number";
+
 export class UserManager {
   private userData: {
     [user: string]: User;
@@ -104,7 +107,11 @@ export class UserManager {
     const discordUsers = getDiscordUsersForMessage(message);
     return Object.keys(discordUsers)
       .map((dUser) => this.getUserData(dUser))
-      .filter((user) => user != null && user.retentionDate > moment().unix());
+      .filter((user) => user != null && user.retentionDate > moment().unix())
+      .filter(
+        (user) =>
+          isNumber(user.buy) || user.prices.some((price) => isNumber(price))
+      );
   }
 
   public getBestBuyPrice(message: Message) {
