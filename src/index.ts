@@ -173,7 +173,7 @@ client.on("message", (message) => {
             : author.id,
           DEFAULT_TIMEZONE
         );
-        message.reply("Maybe get better with a computer, bitch ...ᵇᶦᵗᶜʰ");
+        message.reply("I've reset your data for the week ...ʷᵉᵉᵏ");
         break;
       }
       case "view": {
