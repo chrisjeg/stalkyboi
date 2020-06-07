@@ -56,7 +56,7 @@ export class UserManager {
   public addPriceToModel(userId: string, price: number, slot?: PriceSlot) {
     let user = this.getUserData(userId);
     const currentTime = moment().unix();
-    if (user.retentionDate < currentTime) {
+    if (user.retentionDate == null || user.retentionDate < currentTime) {
       console.log("Resetting data for ", userId);
       this.resetWeek(userId, DEFAULT_TIMEZONE);
       user = this.getUserData(userId);
