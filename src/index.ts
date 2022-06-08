@@ -5,7 +5,12 @@ import services from "./services";
 import sendAnalysis from "./analysis/sendAnalysis";
 import sendAnalysisForAll from "./analysis/sendAnalysisForAll";
 import moment from "moment";
-const client = new Discord.Client();
+const client = new Discord.Client({
+  intents: [
+    Discord.Intents.FLAGS.GUILDS,
+    Discord.Intents.FLAGS.DIRECT_MESSAGES,
+  ],
+});
 
 const AUTH_LOCATION = "../../config/stalkyboi.json";
 const USER_ID_REGEX = /<\@!([0-9]*)>/;

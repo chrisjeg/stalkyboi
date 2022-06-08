@@ -17,13 +17,15 @@ export default async (id: string, message: Message) => {
     const priceIndex = calculateMaxIndex(guaranteed);
     const price = guaranteed.prices[priceIndex].max;
     const maxPriceDay = slotToDayTime(priceIndex);
-    message.channel.send(
-      `Looks like <@${id}> is lined up for a ${type} with a max price of ${price} on ${maxPriceDay}`,
-      new MessageAttachment(
-        await createChart([user], getDiscordUsersForMessage(message)),
-        "analysis.jpg"
-      )
-    );
+    message.channel.send({
+      content: `Looks like <@${id}> is lined up for a ${type} with a max price of ${price} on ${maxPriceDay}`,
+      attachments: [
+        new MessageAttachment(
+          await createChart([user], getDiscordUsersForMessage(message)),
+          "analysis.jpg"
+        ),
+      ],
+    });
   } else {
     const minMax = analysis[0];
     const mostLikely = analysis[1];
@@ -42,8 +44,8 @@ export default async (id: string, message: Message) => {
             maxMostLikelyIndex
           )} for a max gain of ${mostLikely.prices[maxMostLikelyIndex].max}.`;
 
-    message.channel.send(
-      `
+    message.channel.send({
+      content: `
       Right now, <@${id}>'s potential maximum is ${
         minMax.weekMax
       } and guarenteed minimum is ${
@@ -53,10 +55,12 @@ export default async (id: string, message: Message) => {
       } with a probability of ${(mostLikely.probability * 100).toFixed(
         2
       )}%. ${recommendation}`,
-      new MessageAttachment(
-        await createChart([user], getDiscordUsersForMessage(message)),
-        "analysis.jpg"
-      )
-    );
+      attachments: [
+        new MessageAttachment(
+          await createChart([user], getDiscordUsersForMessage(message)),
+          "analysis.jpg"
+        ),
+      ],
+    });
   }
 };
