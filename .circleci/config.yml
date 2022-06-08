@@ -13,7 +13,7 @@ workflows:
 jobs:
   build:
     docker:
-      - image: circleci/node:erbium
+      - image: circleci/node:gallium
     working_directory: ~/repo
     steps:
       - checkout:
@@ -21,8 +21,8 @@ jobs:
 
       - restore_cache:
           keys:
-            - v3-dependencies-{{ checksum "package.json" }}
-            - v3-dependencies-
+            - v4-dependencies-{{ checksum "package.json" }}
+            - v4-dependencies-
 
       - run:
           command: |
@@ -35,7 +35,7 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: v3-dependencies-{{ checksum "package.json" }}
+          key: v4-dependencies-{{ checksum "package.json" }}
 
       - run: npm run build
 
