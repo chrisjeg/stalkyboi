@@ -60,28 +60,30 @@ const DAYS = [
 const toMinMax = (analysis: Analysis): [number, number][] =>
   analysis.prices.slice(1).map((x) => [x.min, x.max]);
 
-const generateDrawArea = (
-  ctx: CanvasRenderingContext2D,
-  x: d3.ScaleLinear<number, number>,
-  y: d3.ScaleLinear<number, number>
-) => (analysis: [number, number][], fill: string, stroke: string) => {
-  const area = d3
-    .area()
-    .x0((_, i) => x(i))
-    .x1((_, i) => x(i))
-    .y0((d) => y(d[0]))
-    .y1((d) => y(d[1]))
-    .curve(d3.curveMonotoneX)
-    .context(ctx);
+const generateDrawArea =
+  (
+    ctx: CanvasRenderingContext2D,
+    x: d3.ScaleLinear<number, number>,
+    y: d3.ScaleLinear<number, number>
+  ) =>
+  (analysis: [number, number][], fill: string, stroke: string) => {
+    const area = d3
+      .area()
+      .x0((_, i) => x(i))
+      .x1((_, i) => x(i))
+      .y0((d) => y(d[0]))
+      .y1((d) => y(d[1]))
+      .curve(d3.curveMonotoneX)
+      .context(ctx);
 
-  ctx.beginPath();
-  area(analysis);
-  ctx.lineWidth = LINE_WIDTH;
-  ctx.strokeStyle = stroke;
-  ctx.fillStyle = fill;
-  ctx.stroke();
-  ctx.fill();
-};
+    ctx.beginPath();
+    area(analysis);
+    ctx.lineWidth = LINE_WIDTH;
+    ctx.strokeStyle = stroke;
+    ctx.fillStyle = fill;
+    ctx.stroke();
+    ctx.fill();
+  };
 
 export const createChart = async (
   unsortedUsers: Array<User>,
@@ -91,10 +93,10 @@ export const createChart = async (
     [id: string]: {
       minMax: [number, number][];
       mostLikely: [number, number][];
-      max: number;
-      mostLikelyMax: number;
-      min: number;
-      mostLikelyMin: number;
+      max?: number;
+      mostLikelyMax?: number;
+      min?: number;
+      mostLikelyMin?: number;
       image: Image | undefined;
       probability: string;
     };
@@ -104,6 +106,7 @@ export const createChart = async (
     const userAnalysis = generateAnalysisForUser(id);
     const minMax = toMinMax(userAnalysis[0]);
     const mostLikely = toMinMax(userAnalysis[1] ?? userAnalysis[0]);
+    const imageUrl = discordUsers[id]?.imageUrl;
     analyses[id] = {
       minMax,
       mostLikely,
@@ -111,11 +114,8 @@ export const createChart = async (
       mostLikelyMax: d3.max(mostLikely, (x) => x[1]),
       min: d3.min(minMax, (x) => x[0]),
       mostLikelyMin: d3.min(mostLikely, (x) => x[0]),
-      image:
-        discordUsers[id]?.imageUrl != null
-          ? await loadImage(discordUsers[id].imageUrl)
-          : undefined,
-      probability: (userAnalysis[1].probability * 100).toFixed(2),
+      image: imageUrl != null ? await loadImage(imageUrl) : undefined,
+      probability: ((userAnalysis[1].probability ?? 0) * 100).toFixed(2),
     };
   }
   console.log("Analysis Generated");
@@ -137,10 +137,10 @@ export const createChart = async (
     .domain([
       d3.min(Object.values(analyses), (x) =>
         multipleUsers ? x.mostLikelyMin : x.min
-      ),
+      ) as number,
       d3.max(Object.values(analyses), (x) =>
         multipleUsers ? x.mostLikelyMax : x.max
-      ),
+      ) as number,
     ]);
 
   const drawArea = generateDrawArea(ctx, x, y);

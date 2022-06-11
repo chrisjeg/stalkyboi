@@ -30,7 +30,7 @@ export default async (id: string, message: Message) => {
     } else {
       const minMax = analysis[0];
       const mostLikely = analysis[1];
-      if (mostLikely == null) {
+      if (mostLikely.probability == null) {
         return;
       }
 

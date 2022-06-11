@@ -63,10 +63,10 @@ export class UserManager {
     }
 
     if (slot === undefined) {
-      slot = getPriceSlot();
+      slot = getPriceSlot() ?? undefined;
     }
 
-    if (slot === null) {
+    if (slot == null) {
       user.buy = price;
     } else {
       user.prices[slot] = price;
@@ -83,7 +83,8 @@ export class UserManager {
       };
     }
     const currentTime = moment().unix();
-    if (this.userData[userId].retentionDate < currentTime) {
+    const retentionDate = this.userData[userId].retentionDate;
+    if (retentionDate == null || retentionDate < currentTime) {
       this.userData[userId] = {
         ...this.userData[userId],
         buy: NaN,
@@ -107,7 +108,10 @@ export class UserManager {
     const discordUsers = getDiscordUsersForMessage(message);
     return Object.keys(discordUsers)
       .map((dUser) => this.getUserData(dUser))
-      .filter((user) => user != null && user.retentionDate > moment().unix())
+      .filter(
+        (user) =>
+          user.retentionDate != null && user.retentionDate > moment().unix()
+      )
       .filter(
         (user) =>
           isNumber(user.buy) || user.prices.some((price) => isNumber(price))

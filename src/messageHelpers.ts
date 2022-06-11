@@ -11,10 +11,11 @@ export const getDiscordUsersForMessage = (message: Message): DiscordUsers => {
         images[member.user.id] = {
           id: member.user.id,
           name: member.displayName,
-          imageUrl: member.user.avatarURL({
-            format: "png",
-            size: 128,
-          }),
+          imageUrl:
+            member.user.avatarURL({
+              format: "png",
+              size: 128,
+            }) ?? undefined,
         };
         return images;
       },

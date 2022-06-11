@@ -11,6 +11,7 @@ const client = new Discord.Client({
     Discord.Intents.FLAGS.GUILD_MESSAGES,
     Discord.Intents.FLAGS.DIRECT_MESSAGES,
   ],
+  partials: ["CHANNEL"],
 });
 
 const AUTH_LOCATION = "../../config/stalkyboi.json";
@@ -35,6 +36,9 @@ const updateModelForDay = (
 ) => {
   const [timezone, price] = input;
   const lowerCaseTimezone = timezone?.toLowerCase();
+  if (price == null || lowerCaseTimezone == null) {
+    return;
+  }
   const parsedPrice = parseInt(price);
   if (!["am", "pm"].includes(lowerCaseTimezone) || isNaN(parsedPrice)) {
     return;
@@ -90,10 +94,11 @@ const messageIfBestSundayBuyPrice = (
 };
 
 client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+  console.log(`Logged in as ${client.user?.tag}!`);
 });
 
-client.on("message", (message) => {
+client.on("messageCreate", (message) => {
+  console.log(message.content);
   const { author, content } = message;
   if (content.toLowerCase().startsWith("stalk ")) {
     const [, command, ...input] = content.toLowerCase().split(" ");
@@ -140,7 +145,7 @@ client.on("message", (message) => {
       case "buy": {
         const price = parseInt(input[0]);
         if (!isNaN(price)) {
-          services.userManager.addPriceToModel(author.id, price, null);
+          services.userManager.addPriceToModel(author.id, price, undefined);
           if (getPriceSlot() === null) {
             messageIfBestSundayBuyPrice(message, price);
           } else {

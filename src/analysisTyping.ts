@@ -9,7 +9,7 @@ export enum Pattern {
 export interface DiscordUser {
   id: string;
   name: string;
-  imageUrl: string;
+  imageUrl?: string;
 }
 
 export type DiscordUsers = {

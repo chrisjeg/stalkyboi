@@ -19,7 +19,7 @@ export const generateAnalysisForUser = (userId: string): Analysis[] => {
 };
 
 export const calculateMaxIndex = (analysis: Analysis) => {
-  const currentPriceSlot = getPriceSlot() + SUNDAY_OFFSET;
+  const currentPriceSlot = (getPriceSlot() ?? 0) + SUNDAY_OFFSET;
   const offsetPrices = analysis.prices.slice(currentPriceSlot);
   const maxPrice = Math.max(...offsetPrices.map((x) => x.max));
   return currentPriceSlot + offsetPrices.findIndex((v) => v.max === maxPrice);
