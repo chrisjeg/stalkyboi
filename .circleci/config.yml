@@ -41,4 +41,4 @@ jobs:
 
       - run: rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" --progress ./ $USER@$HOST:~/stalkyboi --delete
 
-      - run: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $USER@$HOST 'pm2 stop stalkyboi && sleep 5 && cd ~/stalkyboi && npm rebuild canvas --update-binary && pm2 start stalkyboi'
+      - run: ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $USER@$HOST 'pm2 stop stalkyboi && sleep 5 && cd ~/stalkyboi && npm rebuild canvas --update-binary && pm2 start stalkyboi --interpreter=/usr/local/bin/node'
