@@ -31,7 +31,7 @@
     "jsonfile": "^6.0.1",
     "lodash": "^4.17.21",
     "moment": "^2.25.3",
-    "moment-timezone": "^0.5.28",
+    "moment-timezone": "^0.5.35",
     "winston": "^3.2.1"
   },
   "devDependencies": {
