@@ -15,7 +15,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/rest": "^0.5.0",
     "@types/color": "^3.0.1",
     "@types/d3": "^5.7.2",
     "@types/jsonfile": "^5.0.0",

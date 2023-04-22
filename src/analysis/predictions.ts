@@ -474,8 +474,8 @@ function generate_peak_price(
   // since forward prediction is more useful here.
   //
   // Main spike 1
-  min_pred = get_price(rate_min, buy_price) - 1;
-  max_pred = get_price(rate_max, buy_price) - 1;
+  let min_pred = get_price(rate_min, buy_price) - 1;
+  let max_pred = get_price(rate_max, buy_price) - 1;
   if (!isNaN(given_prices[start])) {
     min_pred = given_prices[start];
     max_pred = given_prices[start];
@@ -1025,7 +1025,7 @@ module.exports = function analyze_possibilities(
     poss.weekMax = Math.max(...weekMaxes);
   }
 
-  category_totals = {};
+  let category_totals = {};
   for (let i of [0, 1, 2, 3]) {
     category_totals[i] = generated_possibilities
       .filter((value) => value.pattern_number == i)
@@ -1044,9 +1044,9 @@ module.exports = function analyze_possibilities(
     );
   });
 
-  global_min_max = [];
+  let global_min_max = [];
   for (var day = 0; day < 14; day++) {
-    prices = {
+    let prices = {
       min: 999,
       max: 0,
     };
